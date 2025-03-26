@@ -2,7 +2,7 @@
 👋 Ola, me chamo João Pedro Teixeira Reis 
 👀 Estou interessado em desenvolver meu conhecimento em programação e desenvolvimento de softwares. 
 🌱 Atualmente realizando um curso tecnico de TI (3°ano) 
-👨‍💼 Estou procurando melhorar meus conhecimentos e se possivel, estagiar em alguma empresa. 
+👨‍💼 Estou procurando melhorar meus conhecimentos como desenvolvedor. 
 📫 Contato: instagram - @Teixasz__ / email - joaopedroteixeirareis@gmail.com
 
 ## 🌐Socials
