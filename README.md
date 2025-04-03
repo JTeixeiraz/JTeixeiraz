@@ -5,7 +5,7 @@
 👨‍💼 Estou procurando melhorar meus conhecimentos como desenvolvedor. 
 📫 Contato: instagram - @Teixasz__ / email - joaopedroteixeirareis@gmail.com
 
-## 🌐Socials
+## 🌐Redes Sociais
 [![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://instagram.com/teixasz__) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/www.linkedin.com/in/joaoteixeirareis)
 
 # 💻Minhas Tecnologias
