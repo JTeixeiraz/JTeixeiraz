@@ -40,4 +40,5 @@ java,kotlin,nodejs,spring,react,flutter,docker,express,mongodb,html,css,git,gith
 
 ## Connect with Me
 
-{"linkedin":"https://www.linkedin.com/in/joaoteixeirareis","instagram":"https://www.instagram.com/teixasz__/"}
+- [LinkedIn](https://www.linkedin.com/in/joaoteixeirareis)
+- [Instagram](https://www.instagram.com/teixasz__)
