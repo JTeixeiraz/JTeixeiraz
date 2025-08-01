@@ -34,8 +34,7 @@ java,kotlin,nodejs,spring,react,flutter,docker,express,mongodb,html,css,git,gith
 
 ## Top Projects
 
-- [BackEndPortify]
-(https://github.com/JTeixeiraz/BackEndPortify) - My personal project API with Spring. ⭐ 1 star, Language: Java
+- [BackEndPortify](https://github.com/JTeixeiraz/BackEndPortify) - My personal project API with Spring. ⭐ 1 star, Language: Java
 - [RefatorandoAplicativoKT](https://github.com/JTeixeiraz/RefatorandoAplicativoKT) - Start learning jetpack compose and refactoring code. ⭐ 1 star, Language: Kotlin
 - [praticandoTypeScriptEmNode](https://github.com/JTeixeiraz/praticandoTypeScriptEmNode) - Practicing TypeScript with Node.js for backend development. ⭐ 1 star, Language: TypeScript
 - [ProjetoDesenvolvimentoNodeTS](https://github.com/JTeixeiraz/ProjetoDesenvolvimentoNodeTS) - A project focused on developing an API to organize room reservations in a school. ⭐ 1 star, Language: TypeScript
