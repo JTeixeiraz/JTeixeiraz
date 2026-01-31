@@ -9,7 +9,7 @@
 
 ## Hello! 👋
 
-I'm João Teixeira, a passionate Mobile and Back-End Developer based in Belo Horizonte, Minas Gerais. I love building applications that create a seamless user experience. Let's connect and create something amazing together!
+I'm João Teixeira, a passionate Mobile and FullStack Developer based in Belo Horizonte, Minas Gerais. I love building applications that create a seamless user experience. Let's connect and create something amazing together!
 
 ## About Me
 
