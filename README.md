@@ -13,7 +13,7 @@ I'm João Teixeira, a passionate Mobile and FullStack Developer based in Belo Ho
 
 ## About Me
 
-I'm a dedicated developer with expertise in mobile and back-end development. I enjoy tackling new challenges and continually learning new technologies. Currently, I'm based in Belo Horizonte, MG, and I'm always eager to collaborate on exciting projects.
+I'm a dedicated developer with expertise in mobile and FullStack development. I enjoy tackling new challenges and continually learning new technologies. Currently, I'm based in Belo Horizonte, MG, and I'm always eager to collaborate on exciting projects.
 
 ## Skills & Technologies
 
