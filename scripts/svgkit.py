@@ -80,6 +80,7 @@ class Face:
         var = TTFont(_pick(pred))
         var.flavor = None
         static = instancer.instantiateVariableFont(var, axes)
+        static.recalcTimestamp = False
         buf = io.BytesIO()
         static.save(buf)
         self.blob = buf.getvalue()
@@ -98,7 +99,8 @@ class Face:
         return units * size / self.upm + ls * len(text)
 
     def woff2(self, chars):
-        f = TTFont(io.BytesIO(self.blob))
+        # Sem recalcular o timestamp: regerar sem mudar texto não muda o SVG.
+        f = TTFont(io.BytesIO(self.blob), recalcTimestamp=False)
         opts = subset.Options()
         opts.flavor = "woff2"
         opts.layout_features = ["kern", "liga", "tnum", "case"]
