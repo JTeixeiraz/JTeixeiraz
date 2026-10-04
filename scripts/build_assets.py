@@ -341,9 +341,54 @@ def contact():
     save("contact.svg", s)
 
 
-# ---------------------------------------------------------------- tools
+# ---------------------------------------------------------------- stack
 
-def tools():
+BAND = 168  # altura da fita de marcas
+
+
+def logo_band(s, y0):
+    """A fita de marcas do portfólio: rola sem parar, some nas bordas.
+
+    Os ícones vêm de icons.json (Simple Icons e Codicons, extraídos do
+    react-icons do portfólio). Um conjunto é definido uma vez e reusado
+    duas vezes com <use>, para o laço fechar sem emenda."""
+    icons = C.ICONS
+    size, gap, lsz = 38, 54, 11
+    slots, x = [], 0
+    for ic in icons:
+        sw = max(size, width("mono", ic["label"].upper(), lsz))
+        slots.append((x, sw, ic))
+        x += sw + gap
+    setw = x
+    parts = []
+    for x, sw, ic in slots:
+        cx = x + sw / 2
+        parts.append(f'<svg x="{cx - size / 2:.1f}" y="{y0 + 40}" width="{size}" '
+                     f'height="{size}" viewBox="{ic["viewBox"]}" fill="{INK2}">'
+                     f'{ic["svg"]}</svg>')
+        s.used["mono"].update(ic["label"].upper())
+        parts.append(f'<text x="{cx:.1f}" y="{y0 + 118}" class="mono" '
+                     f'font-size="{lsz}" letter-spacing="{lsz * .15:.2f}" '
+                     f'fill="{INK3}" text-anchor="middle">'
+                     f'{ic["label"].upper().replace("&", "&amp;")}</text>')
+    s.defs.append(f'<g id="set">{"".join(parts)}</g>')
+    s.defs.append(
+        f'<linearGradient id="el" x1="0" x2="1"><stop offset="0" stop-color="{BASE}"/>'
+        f'<stop offset="1" stop-color="{BASE}" stop-opacity="0"/></linearGradient>'
+        f'<linearGradient id="er" x1="1" x2="0"><stop offset="0" stop-color="{BASE}"/>'
+        f'<stop offset="1" stop-color="{BASE}" stop-opacity="0"/></linearGradient>')
+    s.css.append(
+        f"@keyframes mq{{to{{transform:translateX(-{setw:.0f}px)}}}}"
+        f".mq{{animation:mq {setw / 42:.0f}s linear infinite}}"
+        "@media (prefers-reduced-motion:reduce){.mq{animation:none}}")
+    s.add(f'<g class="mq"><use href="#set" x="40"/><use href="#set" '
+          f'x="{40 + setw:.0f}"/></g>')
+    s.rect(0, y0, 150, BAND, fill="url(#el)")
+    s.rect(W - 150, y0, 150, BAND, fill="url(#er)")
+    s.hline(0, W, y0 + BAND)
+
+
+def stack():
     cols, pad = 4, 26
     cw = W / cols
     groups = C.TOOLS
@@ -362,11 +407,13 @@ def tools():
         return cy + 34 - y
 
     hs = [max(cell(Svg(1, 1, ""), 0, 0, g) for g in r) for r in rows]
-    H = HH + sum(hs)
-    s = Svg(W, H, "Tools", C.alt_tools())
+    top = HH + BAND
+    H = top + sum(hs)
+    s = Svg(W, H, "Stack", C.alt_tools())
     s.rect(0, 0, W, H, fill=BASE)
-    head(s, "tools")
-    y = HH
+    logo_band(s, HH)
+    head(s, "stack")
+    y = top
     for r, h in zip(rows, hs):
         for c, g in enumerate(r):
             cell(s, c * cw, y, g)
@@ -374,10 +421,10 @@ def tools():
         if y < H:
             s.hline(0, W, y)
     for c in range(1, cols):
-        s.vline(c * cw, HH, H)
+        s.vline(c * cw, top, H)
     s.rect(.5, .5, W - 1, H - 1, stroke=INK, op=0.14)
     corners(s, 0, 0, W, H)
-    save("tools.svg", s)
+    save("stack.svg", s)
 
 
 # -------------------------------------------------------------- buttons
@@ -405,7 +452,7 @@ if __name__ == "__main__":
     featured()
     cards()
     boundary()
-    tools()
+    stack()
     contact()
     for b in C.BUTTONS:
         button(*b)

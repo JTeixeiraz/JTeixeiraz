@@ -4,6 +4,8 @@ I'm a full stack developer in XP Educação's Software Engineering squad, workin
 
 Outside the squad I build and run my own products, and take the occasional contract. I study Software Engineering at PUC Minas.
 
+<img src="assets/stack.svg" width="100%" alt="Stack — what I ship with. Languages: TypeScript, Python, Rust, Dart, Java, C#. Front: React, Next.js, Tailwind, TanStack Query, Flutter, Tauri. Back: Node.js, Express, FastAPI, Django, Flask, Deno. Data: PostgreSQL, MongoDB, Cosmos DB, Firestore, SQLite. Cloud and infra: Azure, Azure Functions, Azure DevOps, Google Cloud, Firebase, Supabase, Cloudflare R2, Docker, GitHub Actions, RabbitMQ. AI: Claude API, Gemini API, NVIDIA NIM, Ollama, tool calling, structured output, RAG, MCP, subagents.">
+
 <img src="assets/craft.svg" width="100%" alt="The craft, at XP Educação: I automate what depended on someone remembering. I deliver the whole feature, not my slice of it. I make systems talk that were never built to. I instrument what nobody is watching. I treat documents and credentials as attack surface. I put AI agents into production on a leash.">
 
 <a href="https://vyro-studio-97878960.netlify.app/birdy"><img src="assets/project-birdy.svg" width="100%" alt="Projects. Birdy — aviary management SaaS for exotic bird breeders, live on Google Play and the App Store. Built, shipped and run solo."></a>
@@ -14,8 +16,6 @@ Outside the squad I build and run my own products, and take the occasional contr
 <a href="https://joao-teixeira-eng.netlify.app/#fora"><img src="assets/project-dcars.svg" width="49.6%" alt="D'Cars Box — freelance: a bespoke offline-first desktop ERP for a mechanic's workshop."></a>
 
 <img src="assets/boundary.svg" width="100%" alt="Where automation stops. SustentaBot, an AI agent in production on Slack: the model suggests, deterministic code executes, and nothing is dispatched until the product manager approves.">
-
-<img src="assets/tools.svg" width="100%" alt="Tools. Front: React, Next.js, TypeScript, Tailwind, TanStack Query, Flutter, Tauri. Back: Python, FastAPI, Node.js, Express, Rust, Django, Flask, C#, Java. Data: PostgreSQL, MongoDB, Cosmos DB, Firestore, SQLite. Cloud: Azure, Google Cloud, Firebase, Supabase. AI: Claude API, Gemini API, tool calling, structured output, RAG, MCP.">
 
 <img src="assets/contact.svg" width="100%" alt="Let's talk. If you have a system that needs to hold up under real users, write to me. I answer in Portuguese or English.">
 

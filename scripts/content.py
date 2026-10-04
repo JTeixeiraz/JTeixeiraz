@@ -10,6 +10,9 @@ Regras herdadas, de propósito:
 - Nenhuma frase de "procurando emprego": o perfil é visível para a XP.
 """
 
+import json
+import os
+
 from svgkit import width, wrap
 
 EASE_IO = "cubic-bezier(.65,0,.35,1)"
@@ -32,12 +35,17 @@ HERO = {
 
 # slug: (índice, título, nota à direita)
 HEADS = {
-    "craft": ("002", "THE CRAFT", "AT XP EDUCAÇÃO · 01 — 06"),
-    "projects": ("003", "PROJECTS", "OWN PRODUCTS + FREELANCE · 01 — 05"),
-    "boundary": ("004", "WHERE AUTOMATION STOPS", "THE BOUNDARY"),
-    "tools": ("005", "TOOLS", "08 GROUPS"),
+    "stack": ("002", "STACK", "WHAT I SHIP WITH"),
+    "craft": ("003", "THE CRAFT", "AT XP EDUCAÇÃO · 01 — 06"),
+    "projects": ("004", "PROJECTS", "OWN PRODUCTS + FREELANCE · 01 — 05"),
+    "boundary": ("005", "WHERE AUTOMATION STOPS", "THE BOUNDARY"),
     "contact": ("006", "LET’S TALK", "PT · EN"),
 }
+
+# Só tecnologia usada para entregar algo que está no ar ou foi entregue —
+# a mesma regra da fita do portfólio.
+with open(os.path.join(os.path.dirname(__file__), "icons.json")) as _f:
+    ICONS = json.load(_f)["icons"]
 
 CONTACT = {
     "lead": "If you have a system that needs to hold up under real users, "
@@ -213,8 +221,8 @@ BOUNDARY = {
 TOOLS = [
     ("FRONT", ["React", "Next.js", "TypeScript", "Tailwind", "TanStack Query",
                "Flutter", "Tauri"]),
-    ("BACK", ["Python", "FastAPI", "Node.js", "Express", "Rust", "Django",
-              "Flask", "C#", "Java"]),
+    ("BACK", ["Python", "FastAPI", "Node.js", "Express", "Deno", "Rust",
+              "Django", "Flask", "C#", "Java"]),
     ("DATA", ["PostgreSQL", "MongoDB", "Cosmos DB", "Firestore", "SQLite",
               "CTEs", "RLS"]),
     ("CLOUD", ["Azure", "Google Cloud", "Firebase", "Supabase", "Pub/Sub",
@@ -224,7 +232,7 @@ TOOLS = [
     ("ARCHITECTURE", ["event-driven", "idempotency", "retry with backoff",
                       "feature flags", "observability", "multi-tenant",
                       "local-first sync"]),
-    ("AI", ["Claude API", "Gemini API", "NVIDIA NIM", "tool calling",
+    ("AI", ["Claude API", "Gemini API", "NVIDIA NIM", "Ollama", "tool calling",
             "structured output", "RAG", "MCP", "subagents", "skills"]),
     ("CRAFT", ["TDD", "pytest", "code review", "Application Insights",
                "SOLID", "design patterns", "Scrum"]),
