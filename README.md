@@ -1,46 +1,26 @@
-```
-      _ _____    _          _               
-     | |_   _|__(_)_  _____(_)_ __ __ _ ____
-  _  | | | |/ _ \ \ \/ / _ \ | '__/ _` |_  /
- | |_| | | |  __/ |>  <  __/ | | | (_| |/ / 
-  \___/  |_|\___|_/_/\_\___|_|_|  \__,_/___|
-                                            
-```
+<a href="https://joao-teixeira-eng.netlify.app"><img src="assets/hero.svg" width="100%" alt="João Pedro Teixeira — Full Stack Developer and Forward Deployed Engineer at XP Educação. Systems that cannot go down."></a>
 
-## Hello! 👋
+I'm a full stack developer in XP Educação's Software Engineering squad, working across most of the company's production systems: the student and professor portals, the academic core, checkout and the financial backoffice, and the serverless automations behind certificates, signed contracts and enrollment. My job is to take a process that depends on someone remembering to do it and turn it into code that runs on its own — and to answer for it when it doesn't.
 
-I'm João Teixeira, a passionate Mobile and FullStack Developer based in Belo Horizonte, Minas Gerais. I love building applications that create a seamless user experience. Let's connect and create something amazing together!
+Outside the squad I build and run my own products, and take the occasional contract. I study Software Engineering at PUC Minas.
 
-## About Me
+<img src="assets/craft.svg" width="100%" alt="The craft, at XP Educação: I automate what depended on someone remembering. I deliver the whole feature, not my slice of it. I make systems talk that were never built to. I instrument what nobody is watching. I treat documents and credentials as attack surface. I put AI agents into production on a leash.">
 
-I'm a dedicated developer with expertise in mobile and FullStack development. I enjoy tackling new challenges and continually learning new technologies. Currently, I'm based in Belo Horizonte, MG, and I'm always eager to collaborate on exciting projects.
+<a href="https://vyro-studio-97878960.netlify.app/birdy"><img src="assets/project-birdy.svg" width="100%" alt="Projects. Birdy — aviary management SaaS for exotic bird breeders, live on Google Play and the App Store. Built, shipped and run solo."></a>
 
-## Skills & Technologies
+<a href="https://vyro-studio-97878960.netlify.app/lumi"><img src="assets/project-lumi.svg" width="49.6%" alt="LUMI — a self-care app with an AI companion, in closed testing."></a>
+<a href="https://github.com/JTeixeiraz/Postly"><img src="assets/project-postly.svg" width="49.6%" alt="Postly — an open-source desktop app that runs a marketing department on local models."></a>
+<a href="https://joao-teixeira-eng.netlify.app/#fora"><img src="assets/project-induxai.svg" width="49.6%" alt="InduxAI — freelance: a cement-kiln prediction script turned into a multi-tenant production API."></a>
+<a href="https://joao-teixeira-eng.netlify.app/#fora"><img src="assets/project-dcars.svg" width="49.6%" alt="D'Cars Box — freelance: a bespoke offline-first desktop ERP for a mechanic's workshop."></a>
 
-<p align="left">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java" width="40" height="40"/><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" alt="Kotlin" width="40" height="40"/><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" alt="Swift" width="40" height="40"/><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" width="40" height="40"/><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" alt="Spring" width="40" height="40"/><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" width="40" height="40"/><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" alt="Flutter" width="40" height="40"/><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" width="40" height="40"/><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" width="40" height="40"/><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" width="40" height="40"/><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" width="40" height="40"/><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="Python" width="40" height="40"/>
-</p>
+<img src="assets/boundary.svg" width="100%" alt="Where automation stops. SustentaBot, an AI agent in production on Slack: the model suggests, deterministic code executes, and nothing is dispatched until the product manager approves.">
 
+<img src="assets/tools.svg" width="100%" alt="Tools. Front: React, Next.js, TypeScript, Tailwind, TanStack Query, Flutter, Tauri. Back: Python, FastAPI, Node.js, Express, Rust, Django, Flask, C#, Java. Data: PostgreSQL, MongoDB, Cosmos DB, Firestore, SQLite. Cloud: Azure, Google Cloud, Firebase, Supabase. AI: Claude API, Gemini API, tool calling, structured output, RAG, MCP.">
 
-## GitHub Stats
+<img src="assets/contact.svg" width="100%" alt="Let's talk. If you have a system that needs to hold up under real users, write to me. I answer in Portuguese or English.">
 
-✨ **Public Repositories**: 56 | **Followers**: 13 | **Following**: 19  
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=JTeixeiraz&show_icons=true&theme=radical)
+<a href="mailto:joaopedroteixeirareis@gmail.com"><img src="assets/btn-email.svg" height="44" alt="Send an email"></a>&nbsp;
+<a href="https://www.linkedin.com/in/joaoteixeirareis"><img src="assets/btn-linkedin.svg" height="44" alt="LinkedIn"></a>&nbsp;
+<a href="https://joao-teixeira-eng.netlify.app"><img src="assets/btn-portfolio.svg" height="44" alt="Portfolio"></a>
 
-## Recent Activity
-
-- 🎉 Pushed updates to [BackEndPortify](https://github.com/JTeixeiraz/BackEndPortify) - Finalizing all services and code for deployment on July 30, 2025.
-- 🔄 Updated [AtividadeSobreCleanArchiteturyNoTypescript](https://github.com/JTeixeiraz/AtividadeSobreCleanArchiteturyNoTypescript) - Implementing new functionalities on July 11, 2025.
-- 📦 Created a new repository [ExercicioImportEExportTypescript](https://github.com/JTeixeiraz/ExercicioImportEExportTypescript) for practicing import and export in TypeScript on July 3, 2025.
-
-## Top Projects
-
-- [BackEndPortify](https://github.com/JTeixeiraz/BackEndPortify) - My personal project API with Spring(currently private). ⭐ 1 star, Language: Java
-- [RefatorandoAplicativoKT](https://github.com/JTeixeiraz/RefatorandoAplicativoKT) - Start learning jetpack compose and refactoring code. ⭐ 1 star, Language: Kotlin
-- [praticandoTypeScriptEmNode](https://github.com/JTeixeiraz/praticandoTypeScriptEmNode) - Practicing TypeScript with Node.js for backend development. ⭐ 1 star, Language: TypeScript
-- [ProjetoDesenvolvimentoNodeTS](https://github.com/JTeixeiraz/ProjetoDesenvolvimentoNodeTS) - A project focused on developing an API to organize room reservations in a school. ⭐ 1 star, Language: TypeScript
-- [testePOOTypescript](https://github.com/JTeixeiraz/testePOOTypescript) - A project to practice object-oriented programming concepts in TypeScript. ⭐ 1 star, Language: TypeScript
-
-## Connect with Me
-
-[![Instagram](https://img.shields.io/badge/Instagram-%23E4405F.svg?logo=Instagram&logoColor=white)](https://instagram.com/teixasz__) [![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/joaoteixeirareis)
+<sub>Full case studies, in Portuguese and English, live on the <a href="https://joao-teixeira-eng.netlify.app">portfolio</a>. The images above are generated by <code>scripts/build_assets.py</code>.</sub>
