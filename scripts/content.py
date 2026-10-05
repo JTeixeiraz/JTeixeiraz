@@ -1,278 +1,176 @@
-"""Todo o texto dos SVGs do perfil.
+"""Todo o texto dos SVGs do perfil, em linguagem simples.
 
-Cada afirmação aqui tem origem no vault do Obsidian (Vagas/02 - Base de
+Cada afirmação tem origem no vault do Obsidian (Vagas/02 - Base de
 Evidências e as notas de cada projeto) ou no content.ts do portfólio.
 
-Regras herdadas, de propósito:
+Regras, de propósito:
 - Perfil é permanente e ninguém atualiza: nada de contagem que envelhece
-  (instalações, demandas, commits, testes). Mecanismo no lugar de número.
+  (instalações, demandas, commits, testes).
 - Nada de taxa de falha de sistema do empregador.
 - Nenhuma frase de "procurando emprego": o perfil é visível para a XP.
+- Uma ideia por frase. Quem lê é recrutador com noventa segundos.
 """
 
 import json
 import os
 
-from svgkit import width, wrap
+from svgkit import AMBER, MINT, PINK, SKY, TILE, VIOLET
 
-EASE_IO = "cubic-bezier(.65,0,.35,1)"
+with open(os.path.join(os.path.dirname(__file__), "icons.json")) as _f:
+    ICONS = {i["label"]: i for i in json.load(_f)["icons"]}
 
 PORTFOLIO = "https://joao-teixeira-eng.netlify.app"
 VYRO = "https://vyro-studio-97878960.netlify.app"
 
 HERO = {
-    "role": "FULL STACK DEVELOPER · FORWARD DEPLOYED ENGINEER",
-    "place": "BELO HORIZONTE, BR · UTC−3",
-    "kicker": "XP EDUCAÇÃO · SOFTWARE ENGINEERING SQUAD",
-    "name": "JOÃO PEDRO TEIXEIRA",
-    "lines": ("SYSTEMS THAT", "CANNOT ", "GO DOWN"),
-    "foot": "PYTHON · TYPESCRIPT · FLUTTER · RUST · AZURE · GOOGLE CLOUD",
-    "foot_r": "FOUNDER · BIRDY",
-    "alt": "João Pedro Teixeira — Systems that cannot go down",
-    "desc": "Full Stack Developer and Forward Deployed Engineer in XP "
-            "Educação's Software Engineering squad, Belo Horizonte, Brazil.",
+    "handle": "README · @JTEIXEIRAZ",
+    "name": ("João Pedro", "Teixeira"),
+    "line": "I build software people depend on every day — and the AI agents "
+            "that help run it.",
+    # (rótulo, destaque, detalhe, cor)
+    "tiles": [
+        ("WORKING AT", "XP Educação", "Full Stack Developer", AMBER),
+        ("LIVE ON THE STORES", "Birdy", "Google Play + App Store", MINT),
+        ("BASED IN", "Belo Horizonte", "Brazil · UTC−3", TILE),
+        ("FOCUS", "AI agents", "with a human in the loop", PINK),
+    ],
+    "stack_label": "MAIN STACK",
+    "stack": ["TypeScript", "Python", "Flutter", "Rust", "React", "Next.js",
+              "Node.js", "FastAPI", "PostgreSQL", "Supabase", "Docker", "Azure"],
 }
 
-# slug: (índice, título, nota à direita)
-HEADS = {
-    "stack": ("002", "STACK", "WHAT I SHIP WITH"),
-    "craft": ("003", "THE CRAFT", "AT XP EDUCAÇÃO · 01 — 06"),
-    "projects": ("004", "PROJECTS", "OWN PRODUCTS + FREELANCE · 01 — 05"),
-    "boundary": ("005", "WHERE AUTOMATION STOPS", "THE BOUNDARY"),
-    "contact": ("006", "LET’S TALK", "PT · EN"),
-}
-
-# Só tecnologia usada para entregar algo que está no ar ou foi entregue —
-# a mesma regra da fita do portfólio.
-with open(os.path.join(os.path.dirname(__file__), "icons.json")) as _f:
-    ICONS = json.load(_f)["icons"]
-
-CONTACT = {
-    "lead": "If you have a system that needs to hold up under real users, "
-            "write to me. I answer in Portuguese or English.",
-    "line": "JOAOPEDROTEIXEIRAREIS@GMAIL.COM · BELO HORIZONTE, BR · UTC−3",
-}
-
-CRAFT = [
-    ("I automate what depended on someone remembering",
-     "Azure Functions in Python, on HTTP and timer triggers, that own the "
-     "whole routine: generate, sign, send, verify.",
-     "CASE — CERTIFICATE PIPELINE"),
-    ("I deliver the whole feature, not my slice of it",
-     "Screen, API, query, migration and deploy. When the rule is wrong in the "
-     "database, a pretty interface fixes nothing.",
-     "CASE — STUDENT ID CARD"),
-    ("I make systems talk that were never built to",
-     "Data contracts between platforms nobody designed together, with "
-     "webhooks, retries and idempotency so an event never counts twice.",
-     "CASE — CONTRACTS, LMS, PAYMENTS"),
-    ("I instrument what nobody is watching",
-     "A scheduled job fails silently while the dashboard stays green. I make "
-     "a business error show up as an error, not a 200.",
-     "CASE — AUTOMATION OBSERVABILITY"),
-    ("I treat documents and credentials as attack surface",
-     "If a certificate can be forged by knowing the format, it is worth "
-     "nothing. The secret lives on the server, never in the shape of the code.",
-     "CASE — AUTHENTICITY HASH + VALIDATOR"),
-    ("I put AI agents into production on a leash",
-     "A model classifies well and decides badly. It adds judgment; dispatch "
-     "stays in deterministic code, behind human approval.",
-     "CASE — SUSTENTABOT"),
+# O que ele faz na XP Educação, sem jargão. (título, frase, cor)
+DOING = [
+    ("Automate manual work",
+     "Processes that depend on someone remembering become code that runs on "
+     "its own — certificates, contracts, enrollment.", VIOLET),
+    ("Ship whole features",
+     "Screen, API, database and deploy. The whole thing, not just my slice "
+     "of it.", AMBER),
+    ("Connect systems",
+     "Payments, digital signatures and learning platforms talking to each "
+     "other — without counting the same event twice.", MINT),
+    ("Watch what runs",
+     "Monitoring that flags business errors, not only server errors — before "
+     "they turn into support tickets.", SKY),
+    ("Keep it secure",
+     "Certificates that can’t be forged, and credentials kept out of the "
+     "code.", PINK),
+    ("Use AI with care",
+     "AI suggests, plain code executes, and a person approves. Never the "
+     "other way around.", VIOLET),
 ]
 
 BIRDY = {
     "slug": "birdy",
-    "label": "OWN PRODUCT · GOOGLE PLAY & APP STORE",
-    "name": "BIRDY",
-    "summary": "Aviary management SaaS for exotic bird breeders. I built it, "
-               "shipped it and run it — growing organically, with no paid "
-               "acquisition.",
-    "bullets": [
-        "Hybrid backend: Firebase issues the JWT, Supabase validates it, and "
-        "Row Level Security isolates every user’s data.",
-        "A genetics engine shared by mobile and desktop: crossing simulator, "
-        "pedigree and inbreeding coefficient.",
-        "Local-first desktop client on its own sync engine: outbox queue, "
-        "poison-pill tolerance, ancestry ordering for foreign keys.",
+    "status": "LIVE · GOOGLE PLAY + APP STORE",
+    "name": "Birdy",
+    "what": "An app for bird breeders to manage their aviary — birds, pairs, "
+            "genetics and pedigree.",
+    "points": [
+        "Built, shipped and run by me, from design to store billing.",
+        "A desktop version that works offline and syncs on its own.",
+        "Security-tested against my own production backend.",
     ],
-    "spec_title": "SPEC SHEET",
-    "spec": [
-        ("STATUS", "LIVE · ANDROID + IOS"),
-        ("AUTH", "FIREBASE JWT · SUPABASE RLS"),
-        ("BILLING", "SERVER-VALIDATED"),
-        ("SYNC", "LOCAL-FIRST · OWN ENGINE"),
-        ("AUDIT", "SELF-PENTESTED · 4 JWT FORGERY VECTORS BLOCKED"),
-        ("GROWTH", "ORGANIC · NO PAID ADS"),
+    "glance": [
+        ("PLATFORMS", "Android · iOS"),
+        ("BACKEND", "Firebase + Supabase"),
+        ("GROWTH", "Organic — no paid ads"),
+        ("ROLE", "Founder, solo"),
     ],
-    "chips": ["FLUTTER", "RIVERPOD", "DRIFT", "FIREBASE", "SUPABASE",
-              "POSTGRESQL", "PLAY BILLING"],
+    "stack": ["Flutter", "Dart", "Firebase", "Supabase", "PostgreSQL"],
     "link": "SEE BIRDY",
     "href": f"{VYRO}/birdy",
 }
 
 CARDS = [
     {
-        "slug": "lumi",
-        "label": "OWN PRODUCT · CLOSED TESTING",
+        "slug": "lumi", "color": VIOLET, "status": "IN TESTING",
         "name": "LUMI",
-        "summary": "A self-care app with an AI companion that runs a "
-                   "consultation by conversation and builds the routine from "
-                   "what it learns.",
-        "bullets": [
-            "The model chain lives in an Edge Function: the device knows no "
-            "model name, and keys never leave the server.",
-            "A fallback rule set by measurement — a 429 rotates the key, any "
-            "other failure rotates the model.",
-            "Structured JSON output as the injection defense: a reply that "
-            "can only fill a closed schema cannot carry an instruction.",
+        "what": "A self-care app with an AI companion that builds your "
+                "routine from a short conversation.",
+        "points": [
+            "AI runs on the server — new models, no app update.",
+            "Fixed-format answers as a defense against prompt injection.",
         ],
-        "chips": ["FLUTTER", "SUPABASE", "DENO", "POSTGRESQL", "CLOUDFLARE R2"],
-        "link": "SEE LUMI",
-        "href": f"{VYRO}/lumi",
+        "stack": ["Flutter", "Supabase", "Deno"],
+        "link": "SEE LUMI", "href": f"{VYRO}/lumi",
     },
     {
-        "slug": "postly",
-        "label": "OPEN SOURCE · MIT",
-        "name": "POSTLY",
-        "summary": "A desktop app that runs a marketing department on your "
-                   "machine: AI roles take turns on local models to research, "
-                   "decide, produce, audit and publish.",
-        "bullets": [
-            "A middleware, not an LLM wrapper. Never two models resident: "
-            "measure free memory, load the strongest that fits, answer, unload.",
-            "Model tier follows the role — whoever decides must reason; whoever "
-            "executes a finished brief need not.",
-            "Shared context as a weighted graph, no database. Releases for "
-            "Linux, macOS and Windows.",
+        "slug": "postly", "color": AMBER, "status": "OPEN SOURCE",
+        "name": "Postly",
+        "what": "A marketing team that runs on your own computer, powered by "
+                "local AI models.",
+        "points": [
+            "Loads one AI model at a time, so it fits on an ordinary laptop.",
+            "Free and MIT-licensed, for Linux, macOS and Windows.",
         ],
-        "chips": ["RUST", "TAURI V2", "REACT", "TYPESCRIPT", "OLLAMA"],
-        "link": "VIEW REPOSITORY",
-        "href": "https://github.com/JTeixeiraz/Postly",
+        "stack": ["Rust", "Tauri", "React", "Ollama"],
+        "link": "VIEW CODE", "href": "https://github.com/JTeixeiraz/Postly",
     },
     {
-        "slug": "induxai",
-        "label": "FREELANCE · INDUSTRIAL ML API",
-        "name": "INDUXAI",
-        "summary": "Turned a cement-kiln prediction script into a "
-                   "multi-tenant production API, consumed by the client’s own "
-                   "SaaS.",
-        "bullets": [
-            "Numerical parity verified against the original pipeline: same "
-            "input, same number.",
-            "Docker image cut from 1.72 GB to 734 MB by removing CUDA the "
-            "production model never touched.",
-            "Scope stated in writing: deployment contracted, model training "
-            "out of scope.",
+        "slug": "induxai", "color": SKY, "status": "FREELANCE",
+        "name": "InduxAI",
+        "what": "An API that predicts a key quality measure in a cement kiln, "
+                "used inside the client’s own software.",
+        "points": [
+            "Turned a data-science script into a production API.",
+            "Shrank the server image from 1.72 GB to 734 MB.",
         ],
-        "chips": ["PYTHON", "FASTAPI", "XGBOOST", "DOCKER", "PYTEST"],
-        "link": "READ MORE",
-        "href": f"{PORTFOLIO}/#fora",
+        "stack": ["Python", "FastAPI", "Docker"],
+        "link": "READ MORE", "href": f"{PORTFOLIO}/#fora",
     },
     {
-        "slug": "dcars",
-        "label": "FREELANCE · WORKSHOP ERP",
-        "name": "D’CARS BOX",
-        "summary": "A bespoke desktop ERP for a mechanic’s workshop: quote, "
-                   "work order, FIFO stock and payment in one loop.",
-        "bullets": [
-            "Answers what off-the-shelf tools don’t: which supplier sold the "
-            "bad part.",
-            "Runs fully offline on SQLite. The network is optional — updates, "
-            "inspection photos, backups.",
-            "Windows builds on every tag through GitHub Actions, with in-app "
-            "auto-update.",
+        "slug": "dcars", "color": PINK, "status": "FREELANCE",
+        "name": "D’Cars Box",
+        "what": "Management software for a mechanic’s workshop: quotes, work "
+                "orders, parts stock and payments.",
+        "points": [
+            "Works fully offline — the internet is optional.",
+            "Shows which supplier sold a faulty part.",
         ],
-        "chips": ["FLUTTER DESKTOP", "RIVERPOD", "DRIFT", "SQLITE",
-                  "GITHUB ACTIONS"],
-        "link": "READ MORE",
-        "href": f"{PORTFOLIO}/#fora",
+        "stack": ["Flutter", "SQLite", "GitHub Actions"],
+        "link": "READ MORE", "href": f"{PORTFOLIO}/#fora",
     },
 ]
 
-BOUNDARY = {
-    "lead": "I run AI agents in production every day. The part that takes "
-            "judgment is not getting a model to write code — it is deciding "
-            "what it is not allowed to execute.",
-    # (índice, papel, nome, descrição, é o portão humano?)
-    "nodes": [
-        ("01", "IN SLACK", "A request", "Someone asks for help in plain "
-         "words, in a thread.", False),
-        ("02", "THE MODEL SUGGESTS", "SustentaBot", "Interviews one question "
-         "at a time, classifies urgency and impact, proposes a developer.",
-         False),
-        ("03", "CODE EXECUTES", "Routing", "Ordinary deterministic Python. No "
-         "model sits in the dispatch path.", False),
-        ("04", "A HUMAN DECIDES", "PM approval", "Nothing is sent until the "
-         "product manager clicks.", True),
-        ("05", "DISPATCH", "Developer DM", "Sent once — a double click or a "
-         "Slack retry cannot send it twice.", False),
+AI = {
+    "steps": [
+        ("STEP 1", "AI suggests", "Reads the request, sorts it by urgency and "
+         "suggests who should handle it.", VIOLET),
+        ("STEP 2", "Code executes", "Plain, predictable code does the "
+         "routing. No AI in that path.", SKY),
+        ("STEP 3", "A person approves", "Nothing is sent until the product "
+         "manager clicks approve.", AMBER),
     ],
-    "notes": [
-        ("LIMITS STAY EXPLICIT",
-         "A text-only model cannot see an attachment. The bot records the "
-         "file, says it did not read it, and asks for a description instead "
-         "of hallucinating."),
-        ("GENERATED CODE IS A DRAFT",
-         "On the InduxAI API, the final branch review caught an unhandled "
-         "KeyError and incomplete NumPy serialization before merge."),
-    ],
+    "label": "IN PRODUCTION AT XP EDUCAÇÃO",
+    "example": "SustentaBot — a Slack assistant that turns support requests "
+               "into ready-to-work tasks.",
+    "note": "When it can’t read something, like an image, it says so instead "
+            "of guessing.",
 }
 
-TOOLS = [
-    ("FRONT", ["React", "Next.js", "TypeScript", "Tailwind", "TanStack Query",
-               "Flutter", "Tauri"]),
-    ("BACK", ["Python", "FastAPI", "Node.js", "Express", "Deno", "Rust",
-              "Django", "Flask", "C#", "Java"]),
-    ("DATA", ["PostgreSQL", "MongoDB", "Cosmos DB", "Firestore", "SQLite",
-              "CTEs", "RLS"]),
-    ("CLOUD", ["Azure", "Google Cloud", "Firebase", "Supabase", "Pub/Sub",
-               "Cloudflare R2"]),
-    ("INFRA", ["Azure Functions", "Container Apps", "Azure DevOps", "Docker",
-               "GitHub Actions", "Edge Functions", "RabbitMQ"]),
-    ("ARCHITECTURE", ["event-driven", "idempotency", "retry with backoff",
-                      "feature flags", "observability", "multi-tenant",
-                      "local-first sync"]),
-    ("AI", ["Claude API", "Gemini API", "NVIDIA NIM", "Ollama", "tool calling",
-            "structured output", "RAG", "MCP", "subagents", "skills"]),
-    ("CRAFT", ["TDD", "pytest", "code review", "Application Insights",
-               "SOLID", "design patterns", "Scrum"]),
+# (rótulo, cor, itens com ícone, texto extra)
+STACK = [
+    ("LANGUAGES", VIOLET, ["TypeScript", "Python", "Dart", "Rust", "Java",
+                           "C#"], ""),
+    ("FRONT END & MOBILE", AMBER, ["React", "Next.js", "Tailwind", "Flutter",
+                                   "Tauri"], ""),
+    ("BACK END", MINT, ["Node.js", "Express", "FastAPI", "Django", "Flask",
+                        "Deno"], ""),
+    ("DATA", SKY, ["PostgreSQL", "MongoDB", "SQLite", "Firebase", "Supabase"],
+     ""),
+    ("CLOUD & DEVOPS", PINK, ["Azure", "Azure DevOps", "Google Cloud",
+                              "Cloudflare", "Docker", "GitHub Actions"], ""),
+    ("AI", VIOLET, ["Claude", "Gemini", "NVIDIA NIM", "Ollama"],
+     "MCP · RAG · tool calling · agents"),
 ]
+PRACTICES = ("PRACTICES", "TDD · code review · event-driven design · retries "
+             "and idempotency · observability · feature flags · Scrum")
 
-# (slug, rótulo, sólido?)
-BUTTONS = [
-    ("email", "SEND AN EMAIL", True),
-    ("linkedin", "LINKEDIN", False),
-    ("portfolio", "PORTFOLIO", False),
+# (slug, rótulo, valor, cor)
+CONTACT = [
+    ("email", "EMAIL", "joaopedroteixeirareis@gmail.com", VIOLET),
+    ("linkedin", "LINKEDIN", "in/joaoteixeirareis", SKY),
+    ("portfolio", "PORTFOLIO · PT / EN", "joao-teixeira-eng.netlify.app", AMBER),
 ]
-
-
-def wrap_title(t, size, maxw):
-    return wrap(t, "title", size, maxw)
-
-
-def wrap_sans(t, size, maxw):
-    return wrap(t, "sans", size, maxw)
-
-
-def wrap_mono(t, size, maxw):
-    return wrap(t, "mono", size, maxw)
-
-
-def alt_craft():
-    return " ".join(f"{i:02d}. {t}. {b}" for i, (t, b, _) in enumerate(CRAFT, 1))
-
-
-def alt_project(p):
-    return f"{p['summary']} " + " ".join(p["bullets"])
-
-
-def alt_boundary():
-    steps = " → ".join(f"{n[2]} ({n[1].lower()})" for n in BOUNDARY["nodes"])
-    return f"{BOUNDARY['lead']} {steps}."
-
-
-def alt_tools():
-    return "; ".join(f"{g}: {', '.join(i)}" for g, i in TOOLS)
-
-
-__all__ = ["width"]

@@ -3,9 +3,9 @@
 
     python3 scripts/build_assets.py
 
-Todo texto dos SVGs mora em content.py; este arquivo só cuida do desenho.
-Larguras: 1120 para peças de largura total, 560 para os cartões que andam
-em pares — os dois somados ocupam a mesma largura de uma peça cheia.
+Linguagem bento: blocos arredondados sobre fundo transparente, um fato por
+bloco. Larguras: 1120 para peças cheias, 553 para os cartões em par e 364
+para os de contato em trio — somados com o vão, ocupam a mesma largura.
 """
 
 import os
@@ -14,445 +14,312 @@ import sys
 sys.path.insert(0, os.path.dirname(__file__))
 
 import content as C  # noqa: E402
-from svgkit import (BASE, INK, INK2, INK3, L_INK, L_INK3, REVEAL, SIG,  # noqa: E402
-                    SIGD, SIGL, SURF, WELL, Svg, width)
+from svgkit import (DARK, DIM, GAP, INK, MINT, ON, REVEAL, TILE,  # noqa: E402
+                    Svg, width, wrap)
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "assets")
-W, CW = 1120, 560
+W = 1120
+HALF = (W - GAP) / 2
+THIRD = (W - GAP * 2) / 3
+ARROW = "#8a87a6"  # cinza que lê tanto na página clara quanto na escura
 
 
-def save(name, svg):
-    with open(os.path.join(OUT, name), "w") as f:
-        f.write(svg.render())
-    print(f"  assets/{name}  {os.path.getsize(os.path.join(OUT, name)) // 1024} KB")
+def save(name, s):
+    path = os.path.join(OUT, name)
+    with open(path, "w") as f:
+        f.write(s.render())
+    print(f"  assets/{name}  {os.path.getsize(path) // 1024} KB")
 
 
-def corners(s, x, y, w, h, k=12, color=INK, op=0.5):
-    """Os marcadores de canto do portfólio: moldura técnica sem virar card."""
-    for cx, cy, dx, dy in ((x, y, 1, 1), (x + w, y, -1, 1),
-                           (x, y + h, 1, -1), (x + w, y + h, -1, -1)):
-        s.add(f'<path d="M{cx + dx * k} {cy}H{cx}V{cy + dy * k}" fill="none" '
-              f'stroke="{color}" stroke-opacity="{op}" stroke-width="1.5"/>')
+def fit(face, text, size, maxw, floor=12):
+    while size > floor and width(face, text, size) > maxw:
+        size -= 1
+    return size
 
 
-# ---------------------------------------------------------------- hero
+def dot(s, x, y, color, r=4):
+    s.add(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{r}" fill="{color}"/>')
+
+
+def link(s, x, y, label, color, anchor_end=False):
+    w = width("label", label, 12)
+    x0 = x - w - 22 if anchor_end else x
+    s.text(x0, y, label, "label", 12, color)
+    s.arrow(x0 + w + 6, y - 11, 11, color)
+
+
+def built_with(s, x, y, names, color, size=20, gap=18):
+    for n in names:
+        s.icon(C.ICONS[n], x, y - size + 4, size, color)
+        s.text(x + size + 7, y, n, "bodym", 14, color)
+        x += size + 7 + width("bodym", n, 14) + gap
+    return x
+
+
+# ----------------------------------------------------------------- hero
 
 def hero():
-    H = 548
-    s = Svg(W, H, C.HERO["alt"], C.HERO["desc"])
+    h = C.HERO
+    cw, rh = (W - GAP * 3) / 4, 172
+    H = rh * 2 + 150 + GAP * 2
+    s = Svg(W, H, f"{' '.join(h['name'])} — {h['line']}",
+            "Working at XP Educação as a Full Stack Developer. Birdy is live "
+            "on Google Play and the App Store. Based in Belo Horizonte, "
+            "Brazil. Focus: AI agents with a human in the loop.")
     s.css.append(REVEAL)
-    s.defs.append(
-        f'<pattern id="dp" width="7" height="7" patternUnits="userSpaceOnUse">'
-        f'<rect width="2" height="2" fill="{INK}"/></pattern>'
-        f'<filter id="nz" filterUnits="userSpaceOnUse" x="0" y="0" width="{W}" '
-        f'height="{H}"><feTurbulence type="fractalNoise" baseFrequency=".0042 .0088" '
-        f'numOctaves="4" seed="29"/><feColorMatrix type="matrix" values="0 0 0 0 1 '
-        f'0 0 0 0 1 0 0 0 0 1 3.4 0 0 0 -1.32"/></filter>'
-        f'<mask id="mn" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" '
-        f'height="{H}"><rect width="{W}" height="{H}" filter="url(#nz)"/></mask>'
-        f'<linearGradient id="fx" x1="0" x2="1"><stop offset=".38" stop-color="#000"/>'
-        f'<stop offset=".95" stop-color="#fff"/></linearGradient>'
-        f'<linearGradient id="fy" x1="0" y1="0" x2="0" y2="1"><stop offset=".1" '
-        f'stop-color="#000"/><stop offset=".4" stop-color="#fff"/><stop '
-        f'offset=".8" stop-color="#fff"/><stop offset=".94" stop-color="#000"/>'
-        f'</linearGradient>'
-        f'<mask id="mx"><rect width="{W}" height="{H}" fill="url(#fx)"/></mask>'
-        f'<mask id="my"><rect width="{W}" height="{H}" fill="url(#fy)"/></mask>'
-        f'<radialGradient id="glow" cx="{W - 170}" cy="150" r="460" '
-        f'gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="{SIG}" '
-        f'stop-opacity=".26"/><stop offset="1" stop-color="{SIG}" stop-opacity="0"/>'
-        f'</radialGradient>'
-    )
-    s.rect(0, 0, W, H, fill=BASE)
-    s.rect(0, 0, W, H, fill="url(#glow)", extra='class="f"')
-    # A trama de pontos ecoa o poço ASCII do portfólio sem desenhar nada.
-    s.add(f'<g class="f d2" mask="url(#mx)"><g mask="url(#my)"><rect width="{W}" '
-          f'height="{H}" fill="url(#dp)" mask="url(#mn)" opacity=".55"/></g></g>')
 
-    s.text(40, 35, "001", "mono", 13, INK3, cls="r")
-    s.text(80, 36, "JPT", "title", 16, INK, cls="r")
-    s.text(80 + width("title", "JPT", 16) + 12, 35, "/  " + C.HERO["role"],
-           "mono", 13, INK3, cls="r")
-    s.text(W - 40, 35, C.HERO["place"], "mono", 13, INK3, anchor="end", cls="r")
-    s.hline(0, W, 58)
+    s.tile(0, 0, cw * 2 + GAP, rh * 2 + GAP, C.VIOLET, cls="r")
+    s.text(32, 48, h["handle"], "label", 12, "#ffffff", cls="r", opacity=.72)
+    first, last = h["name"]
+    s.text(30, 152, first, "head", 70, "#ffffff", cls="r d1")
+    s.text(30, 228, last, "head", 70, "#ffffff", cls="r d1")
+    s.para(32, 282, h["line"], "body", 20, "#ffffff", cw * 2 - 60, 29,
+           cls="r d2", opacity=.92)
 
-    s.rect(40, 218, 7, 7, fill=SIGL, extra='class="r d1"')
-    s.text(58, 225, C.HERO["kicker"], "mono", 13, INK2, cls="r d1")
-    s.text(40, 278, C.HERO["name"], "title", 26, INK, cls="r d2")
-    l1, l2a, l2b = C.HERO["lines"]
-    s.text(36, 380, l1, "disp", 104, INK, cls="r d3")
-    s.runs(36, 476, [(l2a, INK), (l2b, SIGL)], "disp", 104, cls="r d4")
+    spots = [(cw * 2 + GAP * 2, 0), (cw * 3 + GAP * 3, 0),
+             (cw * 2 + GAP * 2, rh + GAP), (cw * 3 + GAP * 3, rh + GAP)]
+    for i, ((label, big, small, col), (x, y)) in enumerate(zip(h["tiles"], spots)):
+        cls, ink = f"r d{i + 2}", ON[col]
+        s.tile(x, y, cw, rh, col, cls=cls)
+        s.text(x + 24, y + 40, label, "label", 11, ink, cls=cls, opacity=.75)
+        s.text(x + 22, y + 106, big, "head", fit("head", big, 30, cw - 46), ink,
+               cls=cls)
+        s.text(x + 24, y + 138, small, "bodym", 15, ink, cls=cls, opacity=.8)
 
-    s.hline(40, W - 40, H - 40, cls="r d5")
-    s.text(40, H - 16, C.HERO["foot"], "mono", 12, INK3, cls="r d6")
-    s.text(W - 40, H - 16, C.HERO["foot_r"], "mono", 12, INK3, anchor="end",
-           cls="r d6")
+    y0 = rh * 2 + GAP * 2
+    s.tile(0, y0, W, 150, TILE, cls="r d6")
+    s.text(32, y0 + 40, h["stack_label"], "label", 11, DIM, cls="r d6")
+    names = h["stack"]
+    step = (W - 64) / len(names)
+    s.add('<g class="r d7">')
+    for i, n in enumerate(names):
+        cx = 32 + step * i + step / 2
+        s.icon(C.ICONS[n], cx - 17, y0 + 58, 34, INK)
+        s.text(cx, y0 + 124, n, "body", 12, DIM, anchor="middle")
+    s.add("</g>")
     save("hero.svg", s)
 
 
-# ------------------------------------------------------- section heads
+# ------------------------------------------------------------ what I do
 
-HH = 178  # altura do bloco de cabeçalho no topo de cada placa
-
-
-def head(s, slug, pad=40):
-    """Índice, título e fio: o cabeçalho de seção do portfólio, embutido na
-    placa. Fica igual no tema claro e no escuro do GitHub — o <picture> com
-    prefers-color-scheme não sobrevive ao link que o GitHub põe no <img>."""
-    idx, title, aside = C.HEADS[slug]
-    size = 84
-    while width("disp", title, size) > s.w - pad * 2:
-        size -= 2
-    s.text(pad, 50, idx, "mono", 13, SIGL)
-    s.text(s.w - pad, 50, aside, "mono", 13, INK3, anchor="end")
-    s.text(pad - 3, 142, title, "disp", size, INK)
-    s.hline(pad, s.w - pad, HH - 1)
-
-
-# ---------------------------------------------------------------- craft
-
-def craft_cell(s, x, y, i, item):
-    title, body, case = item
-    pad = 40
-    s.text(x + pad, y + 54, f"{i:02d}", "mono", 14, SIGL)
-    yy = y + 104
-    for line in C.wrap_title(title, 30, CW - pad * 2):
-        s.text(x + pad, yy, line, "title", 30, INK)
-        yy += 34
-    yy = s.para(x + pad, yy + 14, body, "sans", 18, INK2, CW - pad * 2, 28)
-    s.text(x + pad, yy + 22, case, "mono", 12, INK3)
-    return yy + 22 + 42 - y
-
-
-def craft():
-    items = C.CRAFT
-    rows = [items[i:i + 2] for i in range(0, len(items), 2)]
-    heights = [max(craft_cell(Svg(1, 1, ""), 0, 0, 1, it) for it in row)
-               for row in rows]
-    H = HH + sum(heights)
-    s = Svg(W, H, "The craft", C.alt_craft())
-    s.rect(0, 0, W, H, fill=BASE)
-    head(s, "craft")
-    y, n = HH, 1
-    for row, h in zip(rows, heights):
-        for c, it in enumerate(row):
-            craft_cell(s, c * CW, y, n, it)
+def doing():
+    pad, cols = 28, 3
+    rows = [C.DOING[i:i + cols] for i in range(0, len(C.DOING), cols)]
+    heights = [max(150 + len(wrap(b, "body", 16, THIRD - pad * 2)) * 24 + 8
+                   for _, b, _ in r) for r in rows]
+    H = sum(heights) + GAP * (len(rows) - 1)
+    alt = " ".join(f"{t}: {b}" for t, b, _ in C.DOING)
+    s = Svg(W, H, "What I do", alt)
+    y, n = 0, 1
+    for r, rh in zip(rows, heights):
+        for c, (title, body, col) in enumerate(r):
+            x = c * (THIRD + GAP)
+            s.tile(x, y, THIRD, rh, TILE)
+            s.tile(x + pad, y + pad, 44, 44, col, r=12)
+            s.text(x + pad + 22, y + pad + 27, f"{n:02d}", "label", 13, ON[col],
+                   anchor="middle")
+            s.text(x + pad, y + 114, title, "head", 24, INK)
+            s.para(x + pad, y + 148, body, "body", 16, DIM, THIRD - pad * 2, 24)
             n += 1
-        y += h
-        if y < H:
-            s.hline(0, W, y)
-    s.vline(CW, HH, H)
-    s.rect(.5, .5, W - 1, H - 1, stroke=INK, op=0.14)
-    corners(s, 0, 0, W, H)
-    save("craft.svg", s)
+        y += rh + GAP
+    save("doing.svg", s)
 
 
 # ------------------------------------------------------------- projects
 
-def bullets(s, x, y, items, size, lh, maxw, gap):
-    for b in items:
-        s.rect(x, round(y - size * 0.36), 14, 1.6, fill=SIGL)
-        y = s.para(x + 28, y, b, "sans", size, INK2, maxw - 28, lh) + gap
-    return y - gap
-
-
-def link(s, x, y, label, size=14):
-    s.text(x, y, label, "mono", size, INK)
-    w = width("mono", label, size)
-    s.arrow(x + w + 6, y - size * 0.72, size * 0.66, SIGL)
-    s.hline(x, x + w + size + 2, y + 9, color=INK, op=0.35)
-
-
 def featured():
     p = C.BIRDY
-    pad, lw, rx, kw = 40, 640, 690, 88
-    rw = W - rx - pad
+    pad, lw, rx = 40, 580, 652
+    rw = W - rx - 28
 
-    def draw(s):
-        s.text(pad, 66, p["label"], "mono", 14, SIGL)
-        s.text(pad - 3, 160, p["name"], "disp", 92, INK)
-        y = s.para(pad, 214, p["summary"], "sans", 23, INK, lw - pad, 33)
-        y = bullets(s, pad, y + 26, p["bullets"], 18, 28, lw - pad, 14)
-        y = s.chips(pad, y + 30, p["chips"], lw - pad)
-        link(s, pad, y + 56, p["link"])
-        left = y + 56 + 52
-        # A placa de especificação: chave e valor, como numa etiqueta de
-        # equipamento — no lugar de uma imagem que eu não devo escolher.
-        ry = 74
-        s.text(rx, 66, p["spec_title"], "mono", 12, INK3)
-        for k, v in p["spec"]:
-            s.hline(rx, W - pad, ry + 18)
-            s.text(rx, ry + 50, k, "mono", 11, INK3)
-            vy = ry + 50
-            for line in C.wrap_mono(v, 13, rw - kw):
-                s.text(rx + kw, vy, line, "mono", 13, INK)
-                vy += 20
-            ry = vy - 20 + 14
-        s.hline(rx, W - pad, ry + 18)
-        return max(left, ry + 60)
+    def left(s):
+        s.chip(pad, 36, p["status"], DARK, ink=MINT)
+        s.text(pad - 2, 156, p["name"], "head", 76, DARK)
+        y = s.para(pad, 206, p["what"], "body", 21, DARK, lw, 30)
+        y += 14
+        for pt in p["points"]:
+            lines = wrap(pt, "bodym", 17, lw - 22)
+            dot(s, pad + 4, y - 6, DARK)
+            for line in lines:
+                s.text(pad + 20, y, line, "bodym", 17, DARK)
+                y += 25
+            y += 9
+        return y + 58
 
-    BH = draw(Svg(1, 1, ""))
-    H = HH + BH
-    s = Svg(W, H, f"Projects — {p['name']}, {p['label']}", C.alt_project(p))
-    s.rect(0, 0, W, H, fill=BASE)
-    head(s, "projects")
-    s.rect(0, HH, W, BH, fill=SURF)
-    s.add(f'<defs><radialGradient id="g" cx="{W - 120}" cy="{H}" r="520" '
-          f'gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="{SIG}" '
-          f'stop-opacity=".16"/><stop offset="1" stop-color="{SIG}" '
-          f'stop-opacity="0"/></radialGradient></defs>')
-    s.rect(0, HH, W, BH, fill="url(#g)")
-    s.rect(.5, .5, W - 1, H - 1, stroke=INK, op=0.14)
-    s.hline(0, W, HH + .5)
-    corners(s, 0, 0, W, H)
-    s.add(f'<g transform="translate(0 {HH})">')
-    draw(s)
-    s.add("</g>")
+    probe = Svg(1, 1, "")
+    H = max(left(probe), 470)
+    s = Svg(W, H, f"Birdy — {p['status']}",
+            f"{p['what']} " + " ".join(p["points"]))
+    s.tile(0, 0, W, H, MINT)
+    left(s)
+    link(s, pad, H - 40, p["link"], DARK)
+
+    # O painel "de relance": as respostas que o recrutador procura.
+    s.tile(rx, 28, rw, H - 56, TILE)
+    s.text(rx + 28, 70, "AT A GLANCE", "label", 11, DIM)
+    y = 112
+    for k, v in p["glance"]:
+        s.text(rx + 28, y, k, "label", 10, DIM)
+        s.text(rx + 150, y, v, "bodym", 17, INK)
+        s.add(f'<line x1="{rx + 28}" y1="{y + 18}" x2="{rx + rw - 28}" '
+              f'y2="{y + 18}" stroke="{INK}" stroke-opacity=".1"/>')
+        y += 46
+    s.text(rx + 28, y + 14, "BUILT WITH", "label", 11, DIM)
+    names = p["stack"]
+    step = (rw - 56) / len(names)
+    for i, n in enumerate(names):
+        cx = rx + 28 + step * i + step / 2
+        s.icon(C.ICONS[n], cx - 15, y + 34, 30, INK)
+        s.text(cx, y + 92, n, "body", 12, DIM, anchor="middle")
     save("project-birdy.svg", s)
 
 
-def card_draw(s, p, H=None):
-    pad = 40
-    s.text(pad, 60, p["label"], "mono", 13, SIGL)
-    s.text(pad - 2, 132, p["name"], "disp", 60, INK)
-    y = s.para(pad, 180, p["summary"], "sans", 20, INK, CW - pad * 2, 29)
-    y = bullets(s, pad, y + 22, p["bullets"], 17, 26, CW - pad * 2, 12)
-    y = s.chips(pad, y + 26, p["chips"], CW - pad * 2, size=13)
+def card(s, p, H=None):
+    pad, w = 32, HALF
+    col = p["color"]
+    s.chip(pad, 32, p["status"], col)
+    s.text(pad - 1, 128, p["name"], "head", 42, INK)
+    y = s.para(pad, 170, p["what"], "body", 17, DIM, w - pad * 2, 25) + 10
+    for pt in p["points"]:
+        dot(s, pad + 4, y - 5, col, 3.5)
+        for line in wrap(pt, "bodym", 15.5, w - pad * 2 - 20):
+            s.text(pad + 18, y, line, "bodym", 15.5, INK)
+            y += 23
+        y += 8
     if H is None:
-        return y + 44 + 54
-    link(s, pad, H - 42, p["link"], 13)
+        return y + 64
+    built_with(s, pad, H - 34, p["stack"], INK)
+    link(s, w - pad, H - 34, p["link"], col, anchor_end=True)
     return H
 
 
 def cards():
-    H = max(card_draw(Svg(1, 1, ""), p) for p in C.CARDS)
+    H = max(card(Svg(1, 1, ""), p) for p in C.CARDS)
     for p in C.CARDS:
-        s = Svg(CW, H, f"{p['name']} — {p['label']}", C.alt_project(p))
-        s.rect(0, 0, CW, H, fill=SURF)
-        s.rect(.5, .5, CW - 1, H - 1, stroke=INK, op=0.14)
-        corners(s, 0, 0, CW, H)
-        card_draw(s, p, H)
+        s = Svg(HALF, H, f"{p['name']} — {p['status']}",
+                f"{p['what']} " + " ".join(p["points"]))
+        s.tile(0, 0, HALF, H, TILE)
+        card(s, p, H)
         save(f"project-{p['slug']}.svg", s)
 
 
-# ------------------------------------------------------------- boundary
+# ---------------------------------------------------------- how I use AI
 
-def boundary():
-    b = C.BOUNDARY
-    pad, gap = 40, 22
-    nw = (W - pad * 2 - gap * 4) / 5
-    top = 172
+def ai():
+    a = C.AI
+    gap, pad = 46, 28
+    tw = (W - gap * 2) / 3
+    th = max(150 + len(wrap(t, "body", 16, tw - pad * 2)) * 24 + 40
+             for _, _, t, _ in a["steps"])
+    ex = wrap(a["example"], "headm", 22, W - 64)
+    note = wrap(a["note"], "body", 16, W - 64)
+    eh = 96 + len(ex) * 30 + 14 + len(note) * 24 + 20
+    H = th + GAP + eh
+    s = Svg(W, H, "How I use AI",
+            " ".join(f"{n}: {t}" for _, n, t, _ in a["steps"])
+            + f" {a['example']} {a['note']}")
+    # A barra de cada passo enche em sequência: o pedido anda da IA para o
+    # código e só termina quando a pessoa aprova.
+    for i in range(3):
+        a0, a1 = 22 * i, 22 * i + 22
+        s.css.append(f"@keyframes b{i}{{0%,{a0}%{{transform:scaleX(0)}}"
+                     f"{a1}%,88%{{transform:scaleX(1)}}100%{{transform:scaleX(0)}}}}"
+                     f".b{i}{{animation:b{i} 6s cubic-bezier(.65,0,.35,1) infinite}}")
+    s.css.append(".bar{transform-box:fill-box;transform-origin:left center}"
+                 "@media (prefers-reduced-motion:reduce){.bar{animation:none}}")
+    for i, (step, name, text, col) in enumerate(a["steps"]):
+        x, ink = i * (tw + gap), ON[col]
+        s.tile(x, 0, tw, th, col)
+        s.text(x + pad, 44, step, "label", 11, ink, opacity=.75)
+        s.text(x + pad, 96, name, "head", 28, ink)
+        s.para(x + pad, 132, text, "body", 16, ink, tw - pad * 2, 24, opacity=.88)
+        bar = (f'x="{x + pad}" y="{th - 34}" width="{tw - pad * 2:.1f}" '
+               f'height="6" rx="3" fill="{ink}"')
+        s.add(f'<rect {bar} fill-opacity=".22"/>')
+        s.add(f'<rect {bar} class="bar b{i}"/>')
+        if i < 2:
+            ax, ay = x + tw + 10, th / 2
+            s.add(f'<path d="M{ax} {ay}h{gap - 20}m-8 -7l8 7l-8 7" fill="none" '
+                  f'stroke="{ARROW}" stroke-width="2.5" stroke-linecap="round" '
+                  f'stroke-linejoin="round"/>')
+    y = th + GAP
+    s.tile(0, y, W, eh, TILE)
+    s.chip(32, y + 30, a["label"], MINT)
+    yy = y + 100
+    for line in ex:
+        s.text(32, yy, line, "headm", 22, INK)
+        yy += 30
+    yy += 10
+    for line in note:
+        s.text(32, yy, line, "body", 16, DIM)
+        yy += 24
+    save("ai.svg", s)
 
-    def node_h(n):
-        lines = len(C.wrap_sans(n[3], 16, nw - 36))
-        return 112 + lines * 23 + 26
 
-    nh = max(node_h(n) for n in b["nodes"])
-    rail = top + nh + 44
-    notes_y = rail + 74
-    note_lines = max(len(C.wrap_sans(t, 17, (W - pad * 2 - 48) / 2)) for _, t in b["notes"])
-    BH = notes_y + 64 + note_lines * 26 + 36
-    H = HH + BH
+# ---------------------------------------------------------------- stack
 
-    s = Svg(W, H, "Where automation stops", C.alt_boundary())
-    gate_x = pad + 3 * (nw + gap)
-    # O pacote atravessa o trilho e PARA no portão humano antes de seguir.
-    stop = gate_x + nw / 2 - pad
-    end = W - pad * 2 - nw / 2
-    s.css.append(
-        "@keyframes trip{0%{transform:translateX(0);opacity:0}4%{opacity:1}"
-        f"34%{{transform:translateX({stop - 40:.0f}px)}}"
-        f"40%,66%{{transform:translateX({stop:.0f}px)}}"
-        f"88%{{transform:translateX({end:.0f}px);opacity:1}}"
-        f"96%,100%{{transform:translateX({end:.0f}px);opacity:0}}}}"
-        "@keyframes hold{0%,38%{stroke-opacity:0}44%,64%{stroke-opacity:1}"
-        "70%,100%{stroke-opacity:0}}"
-        f".pk{{animation:trip 7s {C.EASE_IO} infinite}}"
-        ".gt{animation:hold 7s linear infinite}"
-        "@media (prefers-reduced-motion:reduce){.pk{display:none}.gt{animation:none}}"
-    )
-    s.rect(0, 0, W, H, fill=WELL)
-    s.rect(.5, .5, W - 1, H - 1, stroke=INK, op=0.14)
-    corners(s, 0, 0, W, H)
-    head(s, "boundary")
-    s.add(f'<g transform="translate(0 {HH - 8})">')
-    s.para(pad, 72, b["lead"], "title", 26, INK, 900, 32)
+def stack():
+    pad, cols = 28, 3
+    colw = (THIRD - pad * 2) / 2
 
-    for i, (idx, role, name, desc, gate) in enumerate(b["nodes"]):
-        x = pad + i * (nw + gap)
-        fill, ink, sub, red = (SIG, INK, INK, INK) if gate else \
-            (SURF, INK, INK2, SIGL)
-        s.rect(x, top, nw, nh, fill=fill, stroke=None if gate else INK, op=0.18)
-        if gate:
-            s.add(f'<rect x="{x - 6}" y="{top - 6}" width="{nw + 12}" '
-                  f'height="{nh + 12}" fill="none" stroke="{SIGL}" '
-                  f'stroke-width="1.5" class="gt"/>')
-        s.text(x + 18, top + 32, idx, "mono", 12, red)
-        s.text(x + 18, top + 56, role, "monom", 11, sub if gate else INK3)
-        s.text(x + 18, top + 94, name, "title", 21, ink)
-        y = top + 126
-        for line in C.wrap_sans(desc, 16, nw - 36):
-            s.text(x + 18, y, line, "sans", 16, sub)
-            y += 23
-        if i < 4:
-            ax = x + nw + 4
-            s.add(f'<path d="M{ax} {top + nh / 2}h{gap - 8}m-5 -4l5 4l-5 4" '
-                  f'fill="none" stroke="{INK3}" stroke-width="1.4"/>')
-        s.vline(x + nw / 2, top + nh, rail - 6, op=0.2)
-        s.add(f'<rect x="{x + nw / 2 - 3}" y="{rail - 3}" width="6" height="6" '
-              f'fill="{SIGL if gate else INK3}"/>')
-    s.hline(pad, W - pad, rail, op=0.3)
-    s.add(f'<rect class="pk" x="{pad + nw / 2 - 7}" y="{rail - 7}" width="14" '
-          f'height="14" fill="{SIGL}"/>')
+    def tile_h(items, extra):
+        rows = (len(items) + 1) // 2
+        return 92 + rows * 40 + (34 if extra else 0) + 14
 
-    s.hline(pad, W - pad, notes_y)
-    colw = (W - pad * 2 - 48) / 2
-    for i, (t, body) in enumerate(b["notes"]):
-        x = pad + i * (colw + 48)
-        s.text(x, notes_y + 40, f"{i + 1:02d}  {t}", "mono", 12, SIGL)
-        s.para(x, notes_y + 74, body, "sans", 17, INK2, colw, 26)
-    s.add("</g>")
-    save("boundary.svg", s)
+    rows = [C.STACK[i:i + cols] for i in range(0, len(C.STACK), cols)]
+    hs = [max(tile_h(it, ex) for _, _, it, ex in r) for r in rows]
+    label, practices = C.PRACTICES
+    plines = wrap(practices, "body", 17, W - 64)
+    ph = 84 + len(plines) * 26 + 12
+    H = sum(hs) + GAP * len(rows) + ph
+    alt = "; ".join(f"{g.title()}: {', '.join(it)}{(' — ' + ex) if ex else ''}"
+                    for g, _, it, ex in C.STACK) + f"; Practices: {practices}"
+    s = Svg(W, H, "Stack", alt)
+    y = 0
+    for r, rh in zip(rows, hs):
+        for c, (group, col, items, extra) in enumerate(r):
+            x = c * (THIRD + GAP)
+            s.tile(x, y, THIRD, rh, TILE)
+            s.chip(x + pad, y + pad, group, col)
+            for k, n in enumerate(items):
+                ix = x + pad + (k % 2) * colw
+                iy = y + 104 + (k // 2) * 40
+                s.icon(C.ICONS[n], ix, iy - 19, 24, INK)
+                s.text(ix + 34, iy, n, "bodym", fit("bodym", n, 15, colw - 40),
+                       INK)
+            if extra:
+                s.text(x + pad, y + 104 + ((len(items) + 1) // 2) * 40, extra,
+                       "body", 14, DIM)
+        y += rh + GAP
+    s.tile(0, y, W, ph, TILE)
+    s.chip(32, y + 28, label, MINT)
+    s.para(32, y + 92, practices, "body", 17, INK, W - 64, 26)
+    save("stack.svg", s)
 
 
 # -------------------------------------------------------------- contact
 
 def contact():
-    c = C.CONTACT
-    pad = 40
-    lines = C.wrap_title(c["lead"], 30, 860)
-    H = HH + 52 + len(lines) * 36 + 64
-    s = Svg(W, H, "Let's talk", c["lead"])
-    s.rect(0, 0, W, H, fill=BASE)
-    s.add(f'<defs><radialGradient id="g" cx="{W - 140}" cy="{H}" r="420" '
-          f'gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="{SIG}" '
-          f'stop-opacity=".22"/><stop offset="1" stop-color="{SIG}" '
-          f'stop-opacity="0"/></radialGradient></defs>')
-    s.rect(0, 0, W, H, fill="url(#g)")
-    s.rect(.5, .5, W - 1, H - 1, stroke=INK, op=0.14)
-    corners(s, 0, 0, W, H)
-    head(s, "contact")
-    y = HH + 62
-    for line in lines:
-        s.text(pad, y, line, "title", 30, INK)
-        y += 36
-    s.rect(pad, y + 4, 7, 7, fill=SIGL)
-    s.text(pad + 18, y + 11, c["line"], "mono", 13, INK2)
-    save("contact.svg", s)
-
-
-# ---------------------------------------------------------------- stack
-
-BAND = 168  # altura da fita de marcas
-
-
-def logo_band(s, y0):
-    """A fita de marcas do portfólio: rola sem parar, some nas bordas.
-
-    Os ícones vêm de icons.json (Simple Icons e Codicons, extraídos do
-    react-icons do portfólio). Um conjunto é definido uma vez e reusado
-    duas vezes com <use>, para o laço fechar sem emenda."""
-    icons = C.ICONS
-    size, gap, lsz = 38, 54, 11
-    slots, x = [], 0
-    for ic in icons:
-        sw = max(size, width("mono", ic["label"].upper(), lsz))
-        slots.append((x, sw, ic))
-        x += sw + gap
-    setw = x
-    parts = []
-    for x, sw, ic in slots:
-        cx = x + sw / 2
-        parts.append(f'<svg x="{cx - size / 2:.1f}" y="{y0 + 40}" width="{size}" '
-                     f'height="{size}" viewBox="{ic["viewBox"]}" fill="{INK2}">'
-                     f'{ic["svg"]}</svg>')
-        s.used["mono"].update(ic["label"].upper())
-        parts.append(f'<text x="{cx:.1f}" y="{y0 + 118}" class="mono" '
-                     f'font-size="{lsz}" letter-spacing="{lsz * .15:.2f}" '
-                     f'fill="{INK3}" text-anchor="middle">'
-                     f'{ic["label"].upper().replace("&", "&amp;")}</text>')
-    s.defs.append(f'<g id="set">{"".join(parts)}</g>')
-    s.defs.append(
-        f'<linearGradient id="el" x1="0" x2="1"><stop offset="0" stop-color="{BASE}"/>'
-        f'<stop offset="1" stop-color="{BASE}" stop-opacity="0"/></linearGradient>'
-        f'<linearGradient id="er" x1="1" x2="0"><stop offset="0" stop-color="{BASE}"/>'
-        f'<stop offset="1" stop-color="{BASE}" stop-opacity="0"/></linearGradient>')
-    s.css.append(
-        f"@keyframes mq{{to{{transform:translateX(-{setw:.0f}px)}}}}"
-        f".mq{{animation:mq {setw / 42:.0f}s linear infinite}}"
-        "@media (prefers-reduced-motion:reduce){.mq{animation:none}}")
-    s.add(f'<g class="mq"><use href="#set" x="40"/><use href="#set" '
-          f'x="{40 + setw:.0f}"/></g>')
-    s.rect(0, y0, 150, BAND, fill="url(#el)")
-    s.rect(W - 150, y0, 150, BAND, fill="url(#er)")
-    s.hline(0, W, y0 + BAND)
-
-
-def stack():
-    cols, pad = 4, 26
-    cw = W / cols
-    groups = C.TOOLS
-    rows = [groups[i:i + cols] for i in range(0, len(groups), cols)]
-
-    def cell(s, x, y, g):
-        label, items = g
-        s.text(x + pad, y + 40, label, "mono", 12, SIGL)
-        cx, cy, size = x + pad, y + 76, 16
-        for it in items:
-            w = width("sans", it, size)
-            if cx + w > x + cw - pad:
-                cx, cy = x + pad, cy + 25
-            s.text(cx, cy, it, "sans", size, INK2)
-            cx += w + 13
-        return cy + 34 - y
-
-    hs = [max(cell(Svg(1, 1, ""), 0, 0, g) for g in r) for r in rows]
-    top = HH + BAND
-    H = top + sum(hs)
-    s = Svg(W, H, "Stack", C.alt_tools())
-    s.rect(0, 0, W, H, fill=BASE)
-    logo_band(s, HH)
-    head(s, "stack")
-    y = top
-    for r, h in zip(rows, hs):
-        for c, g in enumerate(r):
-            cell(s, c * cw, y, g)
-        y += h
-        if y < H:
-            s.hline(0, W, y)
-    for c in range(1, cols):
-        s.vline(c * cw, top, H)
-    s.rect(.5, .5, W - 1, H - 1, stroke=INK, op=0.14)
-    corners(s, 0, 0, W, H)
-    save("stack.svg", s)
-
-
-# -------------------------------------------------------------- buttons
-
-def button(slug, label, solid):
-    size, padx, H = 15, 30, 60
-    tw = width("monom", label, size)
-    Wb = round(tw + padx * 2 + (22 if not solid else 0))
-    s = Svg(Wb, H, label)
-    if solid:
-        s.rect(0, 0, Wb, H, fill=SIG)
-        s.text(padx, 37, label, "monom", size, INK)
-    else:
-        s.rect(.75, .75, Wb - 1.5, H - 1.5, fill=BASE, stroke=INK, op=0.4,
-               extra='stroke-width="1.5"')
-        s.text(padx, 37, label, "monom", size, INK)
-        s.arrow(padx + tw + 8, 24, 10, SIGL)
-    save(f"btn-{slug}.svg", s)
+    H = 150
+    for slug, label, value, col in C.CONTACT:
+        ink = ON[col]
+        s = Svg(THIRD, H, f"{label.title()}: {value}")
+        s.tile(0, 0, THIRD, H, col)
+        s.text(26, 42, label, "label", 11, ink, opacity=.75)
+        s.arrow(THIRD - 46, 26, 18, ink, sw=2.4)
+        s.text(26, 112, value, "bodym", fit("bodym", value, 21, THIRD - 52), ink)
+        save(f"contact-{slug}.svg", s)
 
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
+    for old in os.listdir(OUT):
+        if old.endswith(".svg"):
+            os.remove(os.path.join(OUT, old))
     hero()
-    craft()
+    doing()
     featured()
     cards()
-    boundary()
+    ai()
     stack()
     contact()
-    for b in C.BUTTONS:
-        button(*b)

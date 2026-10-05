@@ -1,26 +1,34 @@
-<a href="https://joao-teixeira-eng.netlify.app"><img src="assets/hero.svg" width="100%" alt="João Pedro Teixeira — Full Stack Developer and Forward Deployed Engineer at XP Educação. Systems that cannot go down."></a>
+<a href="https://joao-teixeira-eng.netlify.app"><img src="assets/hero.svg" width="100%" alt="João Pedro Teixeira — Full Stack Developer at XP Educação, based in Belo Horizonte, Brazil. Founder of Birdy, live on Google Play and the App Store. Focus: AI agents with a human in the loop."></a>
 
-I'm a full stack developer in XP Educação's Software Engineering squad, working across most of the company's production systems: the student and professor portals, the academic core, checkout and the financial backoffice, and the serverless automations behind certificates, signed contracts and enrollment. My job is to take a process that depends on someone remembering to do it and turn it into code that runs on its own — and to answer for it when it doesn't.
+I'm a **full stack developer and Forward Deployed Engineer at XP Educação**. I work on the systems students and staff use every day — the student and professor portals, checkout, certificates and enrollment. On the side, I build and run my own apps. I study Software Engineering at PUC Minas.
 
-Outside the squad I build and run my own products, and take the occasional contract. I study Software Engineering at PUC Minas.
+### What I do
 
-<img src="assets/stack.svg" width="100%" alt="Stack — what I ship with. Languages: TypeScript, Python, Rust, Dart, Java, C#. Front: React, Next.js, Tailwind, TanStack Query, Flutter, Tauri. Back: Node.js, Express, FastAPI, Django, Flask, Deno. Data: PostgreSQL, MongoDB, Cosmos DB, Firestore, SQLite. Cloud and infra: Azure, Azure Functions, Azure DevOps, Google Cloud, Firebase, Supabase, Cloudflare R2, Docker, GitHub Actions, RabbitMQ. AI: Claude API, Gemini API, NVIDIA NIM, Ollama, tool calling, structured output, RAG, MCP, subagents.">
+<img src="assets/doing.svg" width="100%" alt="What I do: automate manual work; ship whole features, from screen to deploy; connect systems like payments, digital signatures and learning platforms; watch what runs in production; keep documents and credentials secure; use AI with care — AI suggests, code executes, a person approves.">
 
-<img src="assets/craft.svg" width="100%" alt="The craft, at XP Educação: I automate what depended on someone remembering. I deliver the whole feature, not my slice of it. I make systems talk that were never built to. I instrument what nobody is watching. I treat documents and credentials as attack surface. I put AI agents into production on a leash.">
+### Projects
 
-<a href="https://vyro-studio-97878960.netlify.app/birdy"><img src="assets/project-birdy.svg" width="100%" alt="Projects. Birdy — aviary management SaaS for exotic bird breeders, live on Google Play and the App Store. Built, shipped and run solo."></a>
+<a href="https://vyro-studio-97878960.netlify.app/birdy"><img src="assets/project-birdy.svg" width="100%" alt="Birdy — live on Google Play and the App Store. An app for bird breeders to manage their aviary: birds, pairs, genetics and pedigree. Built, shipped and run by me."></a>
 
-<a href="https://vyro-studio-97878960.netlify.app/lumi"><img src="assets/project-lumi.svg" width="49.6%" alt="LUMI — a self-care app with an AI companion, in closed testing."></a>
-<a href="https://github.com/JTeixeiraz/Postly"><img src="assets/project-postly.svg" width="49.6%" alt="Postly — an open-source desktop app that runs a marketing department on local models."></a>
-<a href="https://joao-teixeira-eng.netlify.app/#fora"><img src="assets/project-induxai.svg" width="49.6%" alt="InduxAI — freelance: a cement-kiln prediction script turned into a multi-tenant production API."></a>
-<a href="https://joao-teixeira-eng.netlify.app/#fora"><img src="assets/project-dcars.svg" width="49.6%" alt="D'Cars Box — freelance: a bespoke offline-first desktop ERP for a mechanic's workshop."></a>
+<a href="https://vyro-studio-97878960.netlify.app/lumi"><img src="assets/project-lumi.svg" width="49.6%" alt="LUMI — in testing. A self-care app with an AI companion that builds your routine from a short conversation."></a>
+<a href="https://github.com/JTeixeiraz/Postly"><img src="assets/project-postly.svg" width="49.6%" alt="Postly — open source. A marketing team that runs on your own computer, powered by local AI models."></a>
+<a href="https://joao-teixeira-eng.netlify.app/#fora"><img src="assets/project-induxai.svg" width="49.6%" alt="InduxAI — freelance. An API that predicts a key quality measure in a cement kiln."></a>
+<a href="https://joao-teixeira-eng.netlify.app/#fora"><img src="assets/project-dcars.svg" width="49.6%" alt="D'Cars Box — freelance. Management software for a mechanic's workshop that works fully offline."></a>
 
-<img src="assets/boundary.svg" width="100%" alt="Where automation stops. SustentaBot, an AI agent in production on Slack: the model suggests, deterministic code executes, and nothing is dispatched until the product manager approves.">
+### How I use AI
 
-<img src="assets/contact.svg" width="100%" alt="Let's talk. If you have a system that needs to hold up under real users, write to me. I answer in Portuguese or English.">
+<img src="assets/ai.svg" width="100%" alt="How I use AI. Step 1: AI suggests. Step 2: plain code executes. Step 3: a person approves. In production at XP Educação: SustentaBot, a Slack assistant that turns support requests into ready-to-work tasks.">
 
-<a href="mailto:joaopedroteixeirareis@gmail.com"><img src="assets/btn-email.svg" height="44" alt="Send an email"></a>&nbsp;
-<a href="https://www.linkedin.com/in/joaoteixeirareis"><img src="assets/btn-linkedin.svg" height="44" alt="LinkedIn"></a>&nbsp;
-<a href="https://joao-teixeira-eng.netlify.app"><img src="assets/btn-portfolio.svg" height="44" alt="Portfolio"></a>
+### Stack
 
-<sub>Full case studies, in Portuguese and English, live on the <a href="https://joao-teixeira-eng.netlify.app">portfolio</a>. The images above are generated by <code>scripts/build_assets.py</code>.</sub>
+<img src="assets/stack.svg" width="100%" alt="Stack. Languages: TypeScript, Python, Dart, Rust, Java, C#. Front end and mobile: React, Next.js, Tailwind, Flutter, Tauri. Back end: Node.js, Express, FastAPI, Django, Flask, Deno. Data: PostgreSQL, MongoDB, SQLite, Firebase, Supabase. Cloud and DevOps: Azure, Azure DevOps, Google Cloud, Cloudflare, Docker, GitHub Actions. AI: Claude, Gemini, NVIDIA NIM, Ollama, MCP, RAG.">
+
+### Let's talk
+
+Got a system that needs to hold up under real users? Write to me — I answer in Portuguese or English.
+
+<a href="mailto:joaopedroteixeirareis@gmail.com"><img src="assets/contact-email.svg" width="32.8%" alt="Email: joaopedroteixeirareis@gmail.com"></a>
+<a href="https://www.linkedin.com/in/joaoteixeirareis"><img src="assets/contact-linkedin.svg" width="32.8%" alt="LinkedIn: in/joaoteixeirareis"></a>
+<a href="https://joao-teixeira-eng.netlify.app"><img src="assets/contact-portfolio.svg" width="32.8%" alt="Portfolio, in Portuguese and English"></a>
+
+<sub>Images generated by <code>scripts/build_assets.py</code> — edit the text in <code>scripts/content.py</code>.</sub>
